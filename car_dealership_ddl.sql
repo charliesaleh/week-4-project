@@ -4,27 +4,25 @@ CREATE TABLE customer(
     last_name VARCHAR(100),
     email VARCHAR(100),
     phone_number VARCHAR(15)
-    -- invoice_id INTEGER,
-    -- FOREIGN KEY (invoice_id) REFERENCES invoice(invoice_id)
 );
 
 CREATE TABLE invoice(
     invoice_id SERIAL PRIMARY KEY,
-    amount FLOAT(1000000000000),
     payment_date VARCHAR(100)
-    -- customer_id INTEGER,
-    -- FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    -- salesperson_id INTEGER,
-    -- FOREIGN KEY (salesperson_id) REFERENCES salesperson(salesperson_id),
-    -- inventory_id INTEGER,
-    -- FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
 );
 
 CREATE TABLE inventory(
     inventory_id SERIAL PRIMARY KEY,
     new_car BOOLEAN,
-    amount FLOAT(1000000000000),
-    quantity INTEGER
+    amount FLOAT(9),
+    quantity INTEGER,
+    serial_number VARCHAR(100),
+    license_plate VARCHAR(100),
+    mileage INTEGER
+    -- customer_id INTEGER,
+    -- FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    -- salesperson_id INTEGER,
+    -- FOREIGN KEY (salesperson_id) REFERENCES salesperson(salesperson_id),
     -- car_id INTEGER,
     -- FOREIGN KEY (car_id) REFERENCES car(car_id)
 );
@@ -33,30 +31,24 @@ CREATE TABLE car(
     car_id SERIAL PRIMARY KEY,
     car_make VARCHAR(100),
     car_model VARCHAR(100),
-    car_year INTEGER,
-    serial_number VARCHAR(100),
-    license_plate VARCHAR(100),
-    mileage INTEGER
-    -- inventory_id INTEGER,
-    -- FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id),
-    -- cars_serviced_id INTEGER,
-    -- FOREIGN KEY (cars_serviced_id) REFERENCES cars_serviced(cars_serviced_id),
-    -- service_id INTEGER,
-    -- FOREIGN KEY (service_id) REFERENCES service_tickets(service_id)
+    car_year INTEGER
 );
 
 CREATE TABLE salesperson(
     salesperson_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
-    email VARCHAR(100)
-    -- invoice_id INTEGER,
-    -- FOREIGN KEY (invoice_id) REFERENCES invoice(invoice_id)
+    email VARCHAR(100),
+    address VARCHAR(50),
+    phone_number VARCHAR(15)
 );
 
 CREATE TABLE cars_serviced(
     car_serviced_id SERIAL PRIMARY KEY,
-    quantity INTEGER
+    quantity INTEGER,
+    serial_number VARCHAR(100),
+    license_plate VARCHAR(100),
+    mileage INTEGER
     -- car_id INTEGER,
     -- FOREIGN KEY (car_id) REFERENCES car(car_id)
 );
@@ -64,21 +56,34 @@ CREATE TABLE cars_serviced(
 CREATE TABLE service_tickets(
     service_id SERIAL PRIMARY KEY,
     service_date VARCHAR(100),
-    amount FLOAT(1000000000000),
-    car_description VARCHAR(100)
-    -- car_id INTEGER,
-    -- FOREIGN KEY (car_id) REFERENCES car(car_id),
+    amount FLOAT(9),
+    service_description VARCHAR(1000)
+    -- customer_id INTEGER,
+    -- FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    -- cars_serviced_id INTEGER,
+    -- FOREIGN KEY (car_serviced_id) REFERENCES car_serviced(car_serviced_id),
     -- mechanic_id INTEGER,
     -- FOREIGN KEY (mechanic_id) REFERENCES mechanic(mechanic_id),
-    -- customer_id INTEGER,
-    -- FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+
 );
 
 CREATE TABLE mechanic(
     mechanic_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
-    email VARCHAR(100)
-    -- service_tickets_id INTEGER,
-    -- FOREIGN KEY (service_tickets_id) REFERENCES service_tickets(service_tickets_id)
+    email VARCHAR(100),
+    address VARCHAR(50),
+    phone_number VARCHAR(15)
 );
+
+ALTER TABLE customer
+ADD address VARCHAR(50);
+
+ALTER TABLE invoice
+ADD FOREIGN KEY (salesperson_id) REFERENCES salesperson(salesperson_id);
+
+ALTER TABLE invoice
+ADD FOREIGN KEY (customer_id) REFERENCES customer(customer_id);
+
+ALTER TABLE invoice
+ADD FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id);
